@@ -97,8 +97,11 @@ Enter.TextScaled = true
 Enter.TextSize = 14.000
 Enter.TextWrapped = true
 Enter.MouseButton1Click:connect(function()
-	local Target = PlayerName.Text
-	lp.Character.HumanoidRootPart.CFrame = game.Players[Target].Character.HumanoidRootPart.CFrame
+	local Target = gplr(PlayerName.Text)
+	if Target[1] then
+		Target = Target[1]
+		lp.Character.HumanoidRootPart.CFrame = game.Players[Target].Character.HumanoidRootPart.CFrame
+	end
 end)
 
 UICorner_2.Parent = Enter
