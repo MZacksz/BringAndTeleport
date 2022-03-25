@@ -1,3 +1,20 @@
+local Players = game:GetService("Players")
+	local lp = game.Players.LocalPlayer
+	
+	local function RemoveSpaces(String)
+		return String:gsub("%s+", "") or String
+	end
+	
+	local function FindPlayer(String)
+		String = RemoveSpaces(String)
+		for _, _Player in pairs(Players:GetPlayers()) do
+			if _Player.Name:lower():match('^'.. String:lower()) then
+				return _Player
+			end
+		end
+		return nil
+	end
+
 local _3008 = Instance.new("ScreenGui")
 local Main = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -70,6 +87,9 @@ Enter.TextColor3 = Color3.fromRGB(255, 255, 255)
 Enter.TextScaled = true
 Enter.TextSize = 14.000
 Enter.TextWrapped = true
+Enter.MouseButton1Click:connect(function()
+	
+end)
 
 UICorner_2.Parent = Enter
 
@@ -86,6 +106,25 @@ Fling.TextColor3 = Color3.fromRGB(255, 255, 255)
 Fling.TextScaled = true
 Fling.TextSize = 14.000
 Fling.TextWrapped = true
+Fling.MouseButton1Click:connect(function()
+	local Target = gplr(PlayerName.Text)
+	if Target then
+		local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
+		Thrust.Force = Vector3.new(9999,9999,9999)
+		Thrust.Name = "YeetForce"
+		repeat
+			lp.Character.HumanoidRootPart.CFrame = Target.Character.HumanoidRootPart.CFrame
+			Thrust.Location = Target.Character.HumanoidRootPart.Position
+			game:FindService("RunService").Heartbeat:wait()
+		until not Target.Character:FindFirstChild("Head")
+	else
+		local message = Instance.new("Message", workspace)
+		message.Name = "MessageIsDumb"
+		message.Text = "Players Not Found."
+		wait(2)
+		message:Destroy()
+	end
+end)
 
 UICorner_3.Parent = Fling
 
@@ -102,86 +141,73 @@ Control.TextColor3 = Color3.fromRGB(255, 255, 255)
 Control.TextScaled = true
 Control.TextSize = 14.000
 Control.TextWrapped = true
+Control.MouseButton1Click:connect(function()
+		if Control.Text == "Control" then
+			Control.Text = "UnControl"	
+			workspace[PlayerName.Text].Humanoid.PlatformStand = true
+			W1 = Instance.new("Weld",workspace)
+			W1.Name = "Weld1"
+			W1.Part0 = lp.Character.Torso
+			W1.Part1 = workspace[PlayerName.Text].Torso
+			W2 = Instance.new("Weld",workspace)
+			W2.Name = "Weld2"
+			W2.Part0 = lp.Character.Head
+			W2.Part1 = workspace[PlayerName.Text].Head
+			W3 = Instance.new("Weld",workspace)
+			W3.Name = "Weld3"
+			W3.Part0 = lp.Character.HumanoidRootPart
+			W3.Part1 = workspace[PlayerName.Text].HumanoidRootPart
+			W4 = Instance.new("Weld",workspace)
+			W4.Name = "Weld4"
+			W4.Part0 = lp.Character["Left Arm"]
+			W4.Part1 = workspace[PlayerName.Text]["Left Arm"]
+			W5 = Instance.new("Weld",workspace)
+			W5.Name = "Weld5"
+			W5.Part0 = lp.Character["Left Leg"]
+			W5.Part1 = workspace[PlayerName.Text]["Left Leg"]
+			W6 = Instance.new("Weld",workspace)
+			W6.Name = "Weld6"
+			W6.Part0 = lp.Character["Right Arm"]
+			W6.Part1 = workspace[PlayerName.Text]["Right Arm"]
+			W7 = Instance.new("Weld",workspace)
+			W7.Name = "Weld7"
+			W7.Part0 = lp.Character["Right Leg"]
+			W7.Part1 = workspace[PlayerName.Text]["Right Leg"]
+			for i,v in pairs(lp.Character:GetChildren()) do
+				if v.ClassName == "Part" then
+					v.Transparency = 1
+				end
+				lp.Character.HumanoidRootPart.Transparency = 1
+				if v.ClassName == "Accessory" then
+					v.Handle.Transparency = 1
+				end
+				lp.Character.Humanoid.NameOcclusion = "NoOcclusion"
+			end
+		elseif Control.Text == "UnControl" then
+			Control.Text = "Control"
+			workspace[PlayerName.Text].Humanoid.PlatformStand = false
+			workspace.Weld1:Remove()
+			workspace.Weld2:Remove()
+			workspace.Weld3:Remove()
+			workspace.Weld4:Remove()
+			workspace.Weld5:Remove()
+			workspace.Weld6:Remove()
+			workspace.Weld7:Remove()
+			for i,v in pairs(lp.Character:GetChildren()) do
+				if v.ClassName == "Part" then
+					v.Transparency = 0
+				end
+				lp.Character.HumanoidRootPart.Transparency = 1
+				if v.ClassName == "Accessory" then
+					v.Handle.Transparency = 0
+				end
+				lp.Character.Humanoid.NameOcclusion = "OccludeAll"
+			end
+		end
+	end)
 
 UICorner_4.Parent = Control
 
-local function XFDAZ_fake_script()
-	local script = Instance.new('LocalScript', Enter)
-
-	local Players = game:GetService("Players")
-	local lp = game.Players.LocalPlayer
-	
-	local function RemoveSpaces(String)
-		return String:gsub("%s+", "") or String
-	end
-	
-	local function FindPlayer(String)
-		String = RemoveSpaces(String)
-		for _, _Player in pairs(Players:GetPlayers()) do
-			if _Player.Name:lower():match('^'.. String:lower()) then
-				return _Player
-			end
-		end
-		return nil
-	end
-	
-	local PlayerName = script.Parent.Parent.PlayerName
-	local Enter = script.Parent
-	
-	Enter.MouseButton1Click:connect(function()
-		local Target = FindPlayer(PlayerName.Text)
-		if Target and Target.Character then
-			lp.Character.HumanoidRootPart.CFrame = game.Players[Target].Character.HumanoidRootPart.CFrame
-		end
-	end)
-end
-coroutine.wrap(XFDAZ_fake_script)()
-local function HQNALL_fake_script()
-	local script = Instance.new('LocalScript', Fling)
-
-	local Players = game:GetService("Players")
-	local lp = game.Players.LocalPlayer
-	
-	local function RemoveSpaces(String)
-		return String:gsub("%s+", "") or String
-	end
-	
-	local function FindPlayer(String)
-		String = RemoveSpaces(String)
-		for _, _Player in pairs(Players:GetPlayers()) do
-			if _Player.Name:lower():match('^'.. String:lower()) then
-				return _Player
-			end
-		end
-		return nil
-	end
-	
-	local PlayerName = script.Parent.Parent.PlayerName
-	local Fling = script.Parent
-	
-	Fling.MouseButton1Click:connect(function()
-		local Target = FindPlayer(PlayerName.Text)
-		if Target[1] then
-			Target = Target[1]
-	
-			local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
-			Thrust.Force = Vector3.new(9999,9999,9999)
-			Thrust.Name = "YeetForce"
-			repeat
-				lp.Character.HumanoidRootPart.CFrame = Target.Character.HumanoidRootPart.CFrame
-				Thrust.Location = Target.Character.HumanoidRootPart.Position
-				game:FindService("RunService").Heartbeat:wait()
-			until not Target.Character:FindFirstChild("Head")
-		else
-			local message = Instance.new("Message", workspace)
-			message.Name = "MessageIsDumb"
-			message.Text = "Players NOT found."
-			wait(2)
-			message:Destroy()
-		end
-	end)
-end
-coroutine.wrap(HQNALL_fake_script)()
 local function BQNEWS_fake_script()
 	local script = Instance.new('LocalScript', Control)
 
